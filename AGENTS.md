@@ -9,6 +9,15 @@ This project implements a basic task scheduler in TypeScript. To ensure a consis
 3.  **Testing**: [Vitest](https://vitest.dev/)
 4.  **Dev Tools**: [tsx](https://tsx.is/) for running TypeScript files directly.
 
+## Active Agent Skills
+
+To maintain high engineering standards, the following skills are active:
+- **`scheduler-scaling`**: Project-specific rules for persistence, events, and retries.
+- **`nodejs-backend-patterns`**: Best practices for Express/Fastify and API design.
+- **`nodejs-best-practices`**: General Node.js performance and security patterns.
+- **`typescript-advanced-types`**: Guidance for complex type safety.
+- **`vitest`**: Comprehensive testing API and mocking patterns.
+
 ## Roadmap & Architecture
 
 We are building a dual-interface system:

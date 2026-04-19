@@ -1,3 +1,8 @@
+---
+name: scheduler-scaling
+description: Expert guidance for scaling a TypeScript task scheduler, focusing on persistence, event-driven architecture, retry strategies, and priority queuing. Use this when implementing advanced features in the basic-scheduler project.
+---
+
 # Scheduler Scaling Skill
 
 Guidelines for implementing advanced scheduling features.
