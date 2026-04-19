@@ -1,0 +1,20 @@
+{
+  "name": "basic-scheduler",
+  "version": "1.0.0",
+  "description": "A basic task scheduler in TypeScript",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "precommit": "npm run build && npm run test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.8"
+  }
+}
