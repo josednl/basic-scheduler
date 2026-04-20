@@ -14,13 +14,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/inquirer": "^9.0.9",
     "@types/node": "^25.6.0",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2",
     "vitest": "^3.0.8"
   },
   "dependencies": {
-    "inquirer": "^13.4.2"
+    "enquirer": "^2.4.1"
   }
 }

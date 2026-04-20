@@ -1,4 +1,5 @@
-import inquirer from 'inquirer';
+import pkg from 'enquirer';
+const { prompt } = pkg;
 import { Scheduler } from './scheduler.js';
 
 const scheduler = new Scheduler();
@@ -21,9 +22,9 @@ scheduler.on('task:failed', (taskId, error) => {
 });
 
 async function mainMenu() {
-  const { action } = await inquirer.prompt([
-    {
-      type: 'list',
+  try {
+    const { action }: any = await prompt({
+      type: 'select',
       name: 'action',
       message: 'What would you like to do?',
       choices: [
@@ -33,58 +34,60 @@ async function mainMenu() {
         'Cancel All',
         'Exit'
       ]
-    }
-  ]);
+    });
 
-  switch (action) {
-    case 'Add Task':
-      await addTask();
-      break;
-    case 'List Tasks':
-      listTasks();
-      break;
-    case 'Cancel Task':
-      await cancelTask();
-      break;
-    case 'Cancel All':
-      scheduler.cancelAll();
-      console.log('All tasks cancelled.');
-      break;
-    case 'Exit':
-      scheduler.cancelAll();
-      console.log('Goodbye!');
-      process.exit(0);
+    switch (action) {
+      case 'Add Task':
+        await addTask();
+        break;
+      case 'List Tasks':
+        listTasks();
+        break;
+      case 'Cancel Task':
+        await cancelTask();
+        break;
+      case 'Cancel All':
+        scheduler.cancelAll();
+        console.log('All tasks cancelled.');
+        break;
+      case 'Exit':
+        scheduler.cancelAll();
+        console.log('Goodbye!');
+        process.exit(0);
+    }
+  } catch (err) {
+    // If we catch an error (like Ctrl+C), exit gracefully
+    process.exit(0);
   }
 
   await mainMenu();
 }
 
 async function addTask() {
-  const answers = await inquirer.prompt([
+  const answers: any = await prompt([
     {
       type: 'input',
       name: 'id',
       message: 'Task ID:',
-      validate: (input) => input.trim() !== '' ? true : 'ID is required'
+      validate: (input: string) => input.trim() !== '' ? true : 'ID is required'
     },
     {
-      type: 'number',
+      type: 'numeral',
       name: 'delay',
       message: 'Delay (ms):',
-      default: 1000,
-      validate: (input: number | undefined) => (input !== undefined && !isNaN(input) && input >= 0) ? true : 'Delay must be a positive number'
+      initial: 1000
     },
     {
       type: 'confirm',
       name: 'repeat',
       message: 'Repeat task?',
-      default: false
+      initial: false
     },
     {
       type: 'input',
       name: 'message',
       message: 'Log message:',
-      default: 'Task executed!'
+      initial: 'Task executed!'
     }
   ]);
 
@@ -118,14 +121,12 @@ async function cancelTask() {
     return;
   }
 
-  const { taskId } = await inquirer.prompt([
-    {
-      type: 'list',
-      name: 'taskId',
-      message: 'Select task to cancel:',
-      choices: tasks.map(t => t.id)
-    }
-  ]);
+  const { taskId }: any = await prompt({
+    type: 'select',
+    name: 'taskId',
+    message: 'Select task to cancel:',
+    choices: tasks.map(t => t.id)
+  });
 
   scheduler.cancel(taskId);
 }
