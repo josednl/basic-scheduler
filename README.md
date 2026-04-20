@@ -8,6 +8,8 @@ A lightweight, type-safe task scheduler built with TypeScript and Node.js.
 - **Flexible Timing**: Schedule tasks with specific delays.
 - **Repetition**: Support for recurring tasks.
 - **Task Management**: Cancel specific tasks or clear all at once.
+- **Event-Driven**: Subscribe to scheduler events (`task:scheduled`, `task:executed`, etc.).
+- **Interactive CLI**: Manage tasks in real-time through a command-line interface.
 - **Test-Driven**: Robust test suite using Vitest.
 - **Guaranteed Stability**: Built-in precommit validation for types and tests.
 
@@ -45,11 +47,19 @@ To see a live demonstration, run:
 npx tsx demo.ts
 ```
 
+### Interactive CLI
+
+You can also manage tasks interactively:
+```bash
+npm run cli
+```
+
 ## Development
 
 ### Available Scripts
 
 - `npm run build`: Compiles TypeScript to JavaScript in the `dist/` folder.
+- `npm run cli`: Launches the interactive command-line interface.
 - `npm run test`: Runs the unit test suite using Vitest.
 - `npm run precommit`: Validates the project (build + test). **Mandatory before any commit.**
 
