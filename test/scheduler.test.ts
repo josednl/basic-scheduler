@@ -85,4 +85,31 @@ describe('Scheduler', () => {
     expect(callback1).not.toHaveBeenCalled();
     expect(scheduler.activeTasksCount).toBe(0);
   });
+
+  it('should persist and load tasks correctly', async () => {
+    const testPath = './test-tasks.json';
+    const scheduler1 = new Scheduler(testPath);
+    
+    scheduler1.schedule({
+      id: 'persisted-task',
+      delay: 1000,
+      metadata: { message: 'Hello' }
+    });
+
+    await scheduler1.save();
+
+    const scheduler2 = new Scheduler(testPath);
+    await scheduler2.load();
+
+    expect(scheduler2.listTasks().find(t => t.id === 'persisted-task')).toBeDefined();
+    
+    scheduler1.cancelAll();
+    scheduler2.cancelAll();
+    
+    // Cleanup
+    try {
+      const fs = await import('node:fs/promises');
+      await fs.unlink(testPath);
+    } catch {}
+  });
 });
