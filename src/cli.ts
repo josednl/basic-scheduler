@@ -3,6 +3,7 @@ const { prompt } = pkg;
 import { Scheduler } from './scheduler.js';
 
 const scheduler = new Scheduler();
+await scheduler.load();
 
 // Set up event listeners for feedback
 scheduler.on('task:scheduled', (task) => {
@@ -95,6 +96,7 @@ async function addTask() {
     id: answers.id,
     delay: answers.delay,
     repeat: answers.repeat,
+    metadata: { message: answers.message },
     callback: () => {
       console.log(`\n[TASK ${answers.id}] ${answers.message}`);
     }

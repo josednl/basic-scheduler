@@ -17,6 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 const scheduler = new Scheduler();
+await scheduler.load();
 
 // Forward scheduler events to Socket.io
 scheduler.on('task:scheduled', (task: Task) => {
@@ -55,6 +56,7 @@ io.on('connection', (socket) => {
       id: data.id,
       delay: data.delay,
       repeat: data.repeat,
+      metadata: { message: data.message },
       callback: () => {
         console.log(`[WEB TASK ${data.id}] ${data.message}`);
       }
