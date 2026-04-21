@@ -109,6 +109,33 @@ li:last-child {
   color: #666;
 }
 
+.card.full-width {
+  grid-column: 1 / -1;
+}
+
+.notification-list {
+  max-height: 200px;
+  overflow-y: auto;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+}
+
+.notification {
+  padding: 5px 10px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  gap: 10px;
+}
+
+.notification.executed { color: #27ae60; }
+.notification.failed { color: #e74c3c; font-weight: bold; }
+.notification.cancelled { color: #7f8c8d; }
+.notification.scheduled { color: #2980b9; }
+
+.notif-time { color: #999; min-width: 80px; }
+.notif-type { font-weight: bold; min-width: 100px; }
+.notif-task { font-weight: bold; }
+
 .status-bar {
   margin-top: 20px;
   padding: 10px;

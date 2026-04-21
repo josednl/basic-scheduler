@@ -7,8 +7,17 @@ interface Task {
   repeat?: boolean;
 }
 
+interface Notification {
+  id: string;
+  taskId: string;
+  type: 'executed' | 'failed' | 'cancelled' | 'scheduled';
+  timestamp: Date;
+  message?: string;
+}
+
 const App: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [socket, setSocket] = useState<Socket | null>(null);
   const [status, setStatus] = useState<string>('Connecting...');
   
@@ -17,6 +26,15 @@ const App: React.FC = () => {
   const [delay, setDelay] = useState(1000);
   const [repeat, setRepeat] = useState(false);
   const [message, setMessage] = useState('Task executed!');
+
+  const addNotification = (notification: Omit<Notification, 'id' | 'timestamp'>) => {
+    const newNotification: Notification = {
+      ...notification,
+      id: Math.random().toString(36).substr(2, 9),
+      timestamp: new Date()
+    };
+    setNotifications(prev => [newNotification, ...prev].slice(0, 10)); // Keep last 10
+  };
 
   useEffect(() => {
     const newSocket = io(); // Connects to the same host
@@ -39,15 +57,29 @@ const App: React.FC = () => {
         if (prev.find(t => t.id === task.id)) return prev;
         return [...prev, task];
       });
+      addNotification({ taskId: task.id, type: 'scheduled' });
     });
 
     newSocket.on('notify:executed', (taskId: string) => {
-      // If it's not a repeating task, it will be removed by notify:cancelled or notify:list
-      // But we can show a temporary notification here if we want
+      addNotification({ taskId, type: 'executed' });
+      
+      // Remove from active tasks if it was a one-time task
+      setTasks(prev => {
+        const task = prev.find(t => t.id === taskId);
+        if (task && !task.repeat) {
+          return prev.filter(t => t.id !== taskId);
+        }
+        return prev;
+      });
+    });
+
+    newSocket.on('notify:failed', (data: { taskId: string, error: string }) => {
+      addNotification({ taskId: data.taskId, type: 'failed', message: data.error });
     });
 
     newSocket.on('notify:cancelled', (taskId: string) => {
       setTasks(prev => prev.filter(t => t.id !== taskId));
+      addNotification({ taskId, type: 'cancelled' });
     });
 
     return () => {
@@ -143,6 +175,24 @@ const App: React.FC = () => {
                   >
                     Cancel
                   </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        <div className="card full-width">
+          <h2>Notifications Log</h2>
+          {notifications.length === 0 ? (
+            <p>No recent activity.</p>
+          ) : (
+            <ul className="notification-list">
+              {notifications.map(n => (
+                <li key={n.id} className={`notification ${n.type}`}>
+                  <span className="notif-time">{n.timestamp.toLocaleTimeString()}</span>
+                  <span className="notif-type">[{n.type.toUpperCase()}]</span>
+                  <span className="notif-task">Task: {n.taskId}</span>
+                  {n.message && <span className="notif-msg">- {n.message}</span>}
                 </li>
               ))}
             </ul>
