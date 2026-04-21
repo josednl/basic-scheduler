@@ -8,18 +8,33 @@
     "build": "tsc",
     "test": "vitest run",
     "precommit": "npm run build && npm run test",
-    "cli": "tsx src/cli.ts"
+    "cli": "tsx src/cli.ts",
+    "web:server": "tsx src/web-server.ts",
+    "web:client": "vite src/web",
+    "web:build": "vite build src/web"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
     "@types/node": "^25.6.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2",
+    "vite": "^8.0.9",
     "vitest": "^3.0.8"
   },
   "dependencies": {
-    "enquirer": "^2.4.1"
+    "cors": "^2.8.6",
+    "enquirer": "^2.4.1",
+    "express": "^5.2.1",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "socket.io": "^4.8.3",
+    "socket.io-client": "^4.8.3"
   }
 }
