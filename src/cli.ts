@@ -2,6 +2,9 @@ import pkg from 'enquirer';
 const { prompt } = pkg;
 import { Scheduler } from './scheduler.js';
 
+/**
+ * Interactive CLI for managing scheduled tasks.
+ */
 const scheduler = new Scheduler();
 await scheduler.load();
 

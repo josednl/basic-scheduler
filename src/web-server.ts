@@ -4,6 +4,9 @@ import { Server } from 'socket.io';
 import cors from 'cors';
 import { Scheduler, Task } from './scheduler.js';
 
+/**
+ * Express + Socket.io server to provide a real-time web monitoring interface.
+ */
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {

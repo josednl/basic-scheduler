@@ -4,6 +4,9 @@ import path from 'node:path';
 
 export type TaskCallback = () => void | Promise<void>;
 
+/**
+ * Represents a task to be executed by the scheduler.
+ */
 export interface Task {
   id: string;
   callback?: TaskCallback;
@@ -13,6 +16,9 @@ export interface Task {
   scheduledAt?: number;
 }
 
+/**
+ * Core task scheduler with persistence and event-driven updates.
+ */
 export class Scheduler extends EventEmitter {
   private tasks: Map<string, Task> = new Map();
   private timeouts: Map<string, NodeJS.Timeout> = new Map();
@@ -23,6 +29,9 @@ export class Scheduler extends EventEmitter {
     this.storagePath = storagePath || path.join(process.cwd(), 'tasks.json');
   }
 
+  /**
+   * Loads tasks from the local storage file and reschedules them.
+   */
   async load(): Promise<void> {
     try {
       const data = await fs.readFile(this.storagePath, 'utf8');
@@ -54,6 +63,9 @@ export class Scheduler extends EventEmitter {
     }
   }
 
+  /**
+   * Persists active tasks to the local storage file.
+   */
   async save(): Promise<void> {
     try {
       const tasksToSave = Array.from(this.tasks.values()).map(t => ({
@@ -69,6 +81,9 @@ export class Scheduler extends EventEmitter {
     }
   }
 
+  /**
+   * Schedules a task to be executed after the specified delay.
+   */
   schedule(task: Task): void {
     if (this.tasks.has(task.id)) {
       this.cancel(task.id);
@@ -110,6 +125,9 @@ export class Scheduler extends EventEmitter {
     this.emit('task:scheduled', task);
   }
 
+  /**
+   * Cancels a scheduled task by its ID.
+   */
   cancel(taskId: string): boolean {
     const timeout = this.timeouts.get(taskId);
     if (timeout) {
@@ -123,6 +141,9 @@ export class Scheduler extends EventEmitter {
     return false;
   }
 
+  /**
+   * Cancels all active tasks and clears persistence.
+   */
   cancelAll(): void {
     for (const timeout of this.timeouts.values()) {
       clearTimeout(timeout);
