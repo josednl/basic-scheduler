@@ -7,9 +7,11 @@ A lightweight, type-safe task scheduler built with TypeScript and Node.js.
 - **Type-Safe**: Written entirely in TypeScript with full ESM support.
 - **Flexible Timing**: Schedule tasks with specific delays.
 - **Repetition**: Support for recurring tasks.
+- **Persistence**: Automatically saves and loads tasks from a local JSON file.
 - **Task Management**: Cancel specific tasks or clear all at once.
 - **Event-Driven**: Subscribe to scheduler events (`task:scheduled`, `task:executed`, etc.).
 - **Interactive CLI**: Manage tasks in real-time through a command-line interface.
+- **Web Dashboard**: Real-time monitoring interface using Socket.io and React.
 - **Test-Driven**: Robust test suite using Vitest.
 - **Guaranteed Stability**: Built-in precommit validation for types and tests.
 
@@ -60,6 +62,7 @@ npm run cli
 
 - `npm run build`: Compiles TypeScript to JavaScript in the `dist/` folder.
 - `npm run cli`: Launches the interactive command-line interface.
+- `npm run web:server`: Starts the Web Dashboard server.
 - `npm run test`: Runs the unit test suite using Vitest.
 - `npm run precommit`: Validates the project (build + test). **Mandatory before any commit.**
 
